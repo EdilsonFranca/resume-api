@@ -16,15 +16,17 @@ public class JwtTokenProvider {
     private final String SECRET = "minha-chave-super-secreta-com-32-caracteres-minimo";
     private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
+    private static final long JWT_EXPIRATION_MS = 28_800_000L; // 8 horas
+
     public String gerarToken(String username, String name, Long id) {
-        long EXPIRATION = 28800000;
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .claim("name", name)
                 .claim("id", id)
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(key, SignatureAlgorithm.HS256).compact();
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public String extrairUsername(String token) {

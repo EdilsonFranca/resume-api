@@ -4,7 +4,10 @@ import br.com.curriculopro.domain.entities.*;
 import br.com.curriculopro.domain.enums.State;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.payment.PaymentClient;
+import com.mercadopago.exceptions.MPApiException;
+import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.payment.Payment;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public record ResumeDetailsDto(Long id,
                                String name,
                                String phone,
@@ -42,23 +46,31 @@ public record ResumeDetailsDto(Long id,
 
             try {
 
-                Map<String, Object> data = (Map<String, Object>) payload.get("data");
-                String paymentId = data.get("id").toString();
+                Object dataObj = payload.get("data");
+
+                if (!(dataObj instanceof Map<?, ?> data)) {
+                    return ResponseEntity.badRequest().build();
+                }
+
+                Object idObj = data.get("id");
+
+                if (idObj == null) {
+                    return ResponseEntity.badRequest().build();
+                }
 
                 PaymentClient client = new PaymentClient();
-                Payment payment = client.get(Long.valueOf(paymentId));
+                Payment payment = client.get(Long.parseLong(idObj.toString()));
 
                 if ("approved".equals(payment.getStatus())) {
 
                     String email = payment.getPayer().getEmail();
 
-                    // Ativa premium
-                    System.out.println("Pagamento aprovado para: " + email);
+                    log.info("Pagamento aprovado para {}", email);
                     // userService.activatePremium(email);
                 }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (MPApiException | MPException e) {
+                log.error("Erro ao processar webhook Mercado Pago", e);
             }
 
             return ResponseEntity.ok().build();
