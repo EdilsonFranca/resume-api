@@ -95,13 +95,13 @@ public class ResumeController {
     public ResponseEntity<ExperienceDto> addExperience(@PathVariable Long id, @RequestBody ExperienceDto dto) {
 
         Experience experience = new Experience(
-            dto.id(), dto.nameCompany(), dto.start(), dto.end(), dto.position(), dto.description(), dto.city(), dto.state()
+                dto.id(), dto.nameCompany(), dto.start(), dto.end(), dto.position(), dto.description(), dto.city(), dto.state()
         );
 
         Experience sa = addExperience.add(id, experience);
 
         ExperienceDto response = new ExperienceDto(
-            sa.getId(), sa.getNameCompany(), sa.getStart(), sa.getEnd(), sa.getPosition(), sa.getDescription(), sa.getCity(), sa.getState()
+                sa.getId(), sa.getNameCompany(), sa.getStart(), sa.getEnd(), sa.getPosition(), sa.getDescription(), sa.getCity(), sa.getState()
         );
 
         return ResponseEntity.ok(response);
