@@ -1,5 +1,6 @@
 package br.com.curriculopro.domain.payment;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 public class Payment {
@@ -10,11 +11,13 @@ public class Payment {
     private PaymentStatus status;
     private LocalDateTime createdAt;
 
+    private static final Clock CLOCK = Clock.systemDefaultZone();
+
     public Payment(String email, Long resumeId) {
         this.resumeId   = resumeId;
         this.email      = email;
         this.status     = PaymentStatus.PENDING;
-        this.createdAt  = LocalDateTime.now();
+        this.createdAt  = LocalDateTime.now(CLOCK);
     }
 
     public Payment(Long id, Long resumeId, String email, PaymentStatus status, LocalDateTime createdAt) {

@@ -4,7 +4,10 @@ import br.com.curriculopro.domain.payment.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+
+import static com.zaxxer.hikari.util.ClockSource.CLOCK;
 
 @Entity
 @Getter
@@ -27,11 +30,12 @@ public class PaymentEntity  {
     private String externalReference;
     
     private LocalDateTime createdAt;
+    private static final Clock CLOCK = Clock.systemDefaultZone();
 
     public PaymentEntity(String email) {
         this.email = email;
         this.status = PaymentStatus.PENDING;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now(CLOCK);
     }
 
     public void approve() {
