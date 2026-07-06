@@ -29,6 +29,10 @@
 	<properties>
 		<java.version>17</java.version>
         <kotlin.version>2.2.20</kotlin.version>
+
+		<sonar.projectKey>EdilsonFranca_resume-api</sonar.projectKey>
+		<sonar.organization>edilsonfranca</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 	<dependencies>
 		<dependency>
@@ -189,6 +193,28 @@
                     </execution>
                 </executions>
             </plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>report</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
         </plugins>
 	</build>
 
