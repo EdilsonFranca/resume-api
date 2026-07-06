@@ -17,7 +17,7 @@ import java.util.List;
 @Component
 public class MercadoPagoGateway implements PaymentGateway {
 
-    @Value("${mercadopago.access-token}")
+    @Value("${mercadopago.access-token:dummy-token}")
     private String accessToken;
 
     public String createPayment(Payment payment) {
