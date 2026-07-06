@@ -1,4 +1,4 @@
-package br.com.resume;
+package br.com.curriculopro;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
