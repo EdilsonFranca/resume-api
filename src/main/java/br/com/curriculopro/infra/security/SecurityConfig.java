@@ -35,8 +35,7 @@ public class SecurityConfig {
 
                 // CSRF desabilitado porque a aplicação utiliza autenticação JWT
                 // e não mantém sessão HTTP no servidor (stateless)
-                .csrf(AbstractHttpConfigurer::disable)
-
+                //.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
